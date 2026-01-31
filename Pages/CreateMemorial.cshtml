@@ -1,0 +1,262 @@
+@page
+@model MyProject.Pages.CreateMemorialModel
+@{
+    ViewData["Title"] = "Create Memorial";
+}
+
+<style>
+    .memorial-form {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+    .form-section {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+    }
+    .section-title {
+        color: #1d2d56;
+        font-family: 'Cinzel', serif;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #eaaa10;
+        padding-bottom: 10px;
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-control {
+        border: 2px solid #e9ecef;
+        border-radius: 5px;
+        padding: 12px;
+    }
+    .form-control:focus {
+        border-color: #eaaa10;
+        box-shadow: 0 0 0 0.2rem rgba(234, 170, 16, 0.25);
+    }
+    .btn-ai-help {
+        background-color: #28a745;
+        border-color: #28a745;
+        color: white;
+        margin-left: 10px;
+    }
+    .btn-ai-help:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+        color: white;
+    }
+    .ai-chat-container {
+        display: none;
+        background-color: #f8f9fa;
+        border: 2px solid #28a745;
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 15px;
+    }
+    .chat-messages {
+        height: 300px;
+        overflow-y: auto;
+        border: 1px solid #dee2e6;
+        padding: 15px;
+        background: white;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+    .message {
+        margin-bottom: 15px;
+        padding: 10px;
+        border-radius: 8px;
+    }
+    .message.ai {
+        background-color: #e3f2fd;
+        border-left: 4px solid #2196f3;
+    }
+    .message.user {
+        background-color: #f1f8e9;
+        border-left: 4px solid #4caf50;
+    }
+    .chat-input-group {
+        display: flex;
+        gap: 10px;
+    }
+    .btn-primary {
+        background-color: #1d2d56;
+        border-color: #1d2d56;
+    }
+    .btn-primary:hover {
+        background-color: #152238;
+        border-color: #152238;
+    }
+    .btn-gold {
+        background-color: #eaaa10;
+        border-color: #eaaa10;
+        color: white;
+    }
+    .btn-gold:hover {
+        background-color: #d4941a;
+        border-color: #d4941a;
+        color: white;
+    }
+</style>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
+
+<div class="memorial-form">
+    <h1 class="text-center mb-4" style="color: #1d2d56; font-family: 'Cinzel', serif;">Create Memorial</h1>
+    
+    <form method="post">
+        <!-- Basic Information Section -->
+        <div class="form-section">
+            <h3 class="section-title">Basic Information</h3>
+            
+            <div class="form-group">
+                <label for="Name" class="form-label">Full Name *</label>
+                <input type="text" class="form-control" id="Name" name="Name" asp-for="Name" required />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="BirthDate" class="form-label">Date of Birth *</label>
+                        <input type="date" class="form-control" id="BirthDate" name="BirthDate" asp-for="BirthDate" required />
+                        <span asp-validation-for="BirthDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="DeathDate" class="form-label">Date of Death *</label>
+                        <input type="date" class="form-control" id="DeathDate" name="DeathDate" asp-for="DeathDate" required />
+                        <span asp-validation-for="DeathDate" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Biography Section -->
+        <div class="form-section">
+            <h3 class="section-title">Biography</h3>
+            
+            <div class="form-group">
+                <label for="Biography" class="form-label">Life Story</label>
+                <div class="d-flex align-items-center mb-2">
+                    <span>Write the biography yourself or get help from our AI assistant</span>
+                    <button type="button" class="btn btn-ai-help btn-sm" onclick="toggleAIChat()">
+                        🤖 AI HELP
+                    </button>
+                </div>
+                <textarea class="form-control" id="Biography" name="Biography" asp-for="Biography" rows="8" 
+                          placeholder="Tell us about their life, achievements, personality, and what made them special..."></textarea>
+                <span asp-validation-for="Biography" class="text-danger"></span>
+            </div>
+
+            <!-- AI Chat Container -->
+            <div id="aiChatContainer" class="ai-chat-container">
+                <h5 style="color: #28a745; margin-bottom: 15px;">🤖 AI Biography Assistant</h5>
+                <div id="chatMessages" class="chat-messages">
+                    <div class="message ai">
+                        <strong>AI Assistant:</strong> Hi! I'm here to help you write a beautiful biography. Let's start - what was your loved one's name and what did they like to be called?
+                    </div>
+                </div>
+                <div class="chat-input-group">
+                    <input type="text" id="chatInput" class="form-control" placeholder="Type your response here..." />
+                    <button type="button" class="btn btn-primary" onclick="sendMessage()">Send</button>
+                    <button type="button" class="btn btn-secondary" onclick="applyBiography()">Apply to Biography</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Section -->
+        <div class="text-center">
+            <button type="submit" class="btn btn-gold btn-lg px-5">Create Memorial</button>
+            <a href="/" class="btn btn-outline-secondary btn-lg px-5 ms-3">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<script>
+let conversationHistory = [];
+
+function toggleAIChat() {
+    const container = document.getElementById('aiChatContainer');
+    container.style.display = container.style.display === 'none' ? 'block' : 'block';
+}
+
+async function sendMessage() {
+    const input = document.getElementById('chatInput');
+    const message = input.value.trim();
+    
+    if (!message) return;
+    
+    // Add user message
+    addMessage('user', message);
+    conversationHistory.push(message);
+    input.value = '';
+    
+    // Show loading
+    addMessage('ai', 'Thinking...');
+    
+    try {
+        const response = await fetch('/api/chat/biography-assistance', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: message,
+                conversationHistory: conversationHistory.slice(0, -1)
+            })
+        });
+        
+        const data = await response.json();
+        
+        // Remove loading message
+        const messages = document.getElementById('chatMessages');
+        messages.removeChild(messages.lastChild);
+        
+        if (response.ok) {
+            addMessage('ai', data.response);
+            conversationHistory.push(data.response);
+        } else {
+            addMessage('ai', data.error || 'Sorry, I encountered an error. Please try again.');
+        }
+    } catch (error) {
+        // Remove loading message
+        const messages = document.getElementById('chatMessages');
+        messages.removeChild(messages.lastChild);
+        addMessage('ai', 'Sorry, I\'m having trouble connecting. Please check your API key configuration.');
+    }
+}
+
+function addMessage(type, content) {
+    const messagesContainer = document.getElementById('chatMessages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${type}`;
+    
+    const sender = type === 'ai' ? 'AI Assistant' : 'You';
+    messageDiv.innerHTML = `<strong>${sender}:</strong> ${content}`;
+    
+    messagesContainer.appendChild(messageDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function applyBiography() {
+    const userResponses = conversationHistory.filter((msg, index) => index % 2 === 0);
+    
+    if (userResponses.length > 0) {
+        const biography = userResponses.join(' ');
+        document.getElementById('Biography').value = biography;
+        alert('Biography has been applied to the form!');
+    } else {
+        alert('Please have a conversation with the AI first to generate content.');
+    }
+}
+
+document.getElementById('chatInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        sendMessage();
+    }
+});
+</script>
