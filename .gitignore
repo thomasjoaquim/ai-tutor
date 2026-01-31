@@ -330,3 +330,8 @@ FodyWeavers.xsd
 # Application logs
 app.log
 *.log
+
+# Environment variables
+.env
+.env.local
+.env.production

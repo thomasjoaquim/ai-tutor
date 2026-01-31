@@ -23,10 +23,10 @@ Keep responses warm, brief, and focused. Always be respectful when discussing so
 
         public OpenAIService(IConfiguration configuration)
         {
-            var apiKey = configuration["OpenAI:ApiKey"];
-            if (string.IsNullOrEmpty(apiKey) || apiKey == "your-openai-api-key-here")
+            var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY") ?? configuration["OpenAI:ApiKey"];
+            if (string.IsNullOrEmpty(apiKey) || apiKey == "your-openai-api-key-here" || apiKey == "${OPENAI_API_KEY}")
             {
-                throw new InvalidOperationException("OpenAI API key is not configured. Please set your API key in appsettings.json");
+                throw new InvalidOperationException("OpenAI API key is not configured. Please set OPENAI_API_KEY in your .env file");
             }
             
             _chatClient = new ChatClient("gpt-3.5-turbo", apiKey);

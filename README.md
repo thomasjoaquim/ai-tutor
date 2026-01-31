@@ -33,25 +33,25 @@ git clone https://github.com/thomasjoaquim/ai-tutor.git
 cd ai-tutor
 ```
 
-2. Configure the database connection in `appsettings.json`:
-```json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost;Database=my_database;Uid=admin;Pwd=your_password;Port=3306;"
-  }
-}
+3. Create a `.env` file based on `.env.example`:
+```bash
+cp .env.example .env
 ```
 
-3. Add your OpenAI API key in `appsettings.json`:
-```json
-{
-  "OpenAI": {
-    "ApiKey": "your-openai-api-key-here"
-  }
-}
+4. Configure your environment variables in `.env`:
+```env
+# Database Configuration
+DB_SERVER=localhost
+DB_DATABASE=my_database
+DB_USER=admin
+DB_PASSWORD=your_password_here
+DB_PORT=3306
+
+# OpenAI Configuration
+OPENAI_API_KEY=your-openai-api-key-here
 ```
 
-4. Restore packages and run:
+5. Restore packages and run:
 ```bash
 dotnet restore
 dotnet run --urls="http://localhost:5000"
