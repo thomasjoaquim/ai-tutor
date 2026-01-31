@@ -12,7 +12,7 @@ services:
       MYSQL_USER: admin
       MYSQL_PASSWORD: P@zzword1
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
@@ -24,7 +24,7 @@ services:
     container_name: lifesqr_web
     restart: always
     ports:
-      - "5000:80"
+      - "5001:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - DB_SERVER=mysql
