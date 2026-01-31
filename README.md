@@ -34,6 +34,8 @@ cd ai-tutor
 
 2. Configure your OpenAI API key in `.env.docker`:
 ```bash
+cp .env.docker.example .env.docker
+# Edit .env.docker with your real API key
 OPENAI_API_KEY=your-openai-api-key-here
 ```
 
