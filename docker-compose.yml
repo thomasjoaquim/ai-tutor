@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: lifesqr_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: my_database
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: P@zzword1
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - lifesqr_network
+
+  # ASP.NET Application
+  web:
+    build: .
+    container_name: lifesqr_web
+    restart: always
+    ports:
+      - "5000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - DB_SERVER=mysql
+      - DB_DATABASE=my_database
+      - DB_USER=admin
+      - DB_PASSWORD=P@zzword1
+      - DB_PORT=3306
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    depends_on:
+      - mysql
+    networks:
+      - lifesqr_network
+
+volumes:
+  mysql_data:
+
+networks:
+  lifesqr_network:
+    driver: bridge

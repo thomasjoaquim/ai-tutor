@@ -18,7 +18,43 @@ A web application built with ASP.NET Core that helps users create digital memori
 - Bootstrap 5
 - JavaScript (ES6+)
 
-## Setup Instructions
+## Docker Setup
+
+### Prerequisites
+- Docker
+- Docker Compose
+
+### Quick Start with Docker
+
+1. Clone the repository:
+```bash
+git clone https://github.com/thomasjoaquim/ai-tutor.git
+cd ai-tutor
+```
+
+2. Configure your OpenAI API key in `.env.docker`:
+```bash
+OPENAI_API_KEY=your-openai-api-key-here
+```
+
+3. Start the application:
+```bash
+./docker.sh up
+```
+
+4. Access the application at `http://localhost:5000`
+
+### Docker Commands
+```bash
+./docker.sh build  # Build Docker images
+./docker.sh up     # Start application
+./docker.sh down   # Stop application
+./docker.sh logs   # View logs
+./docker.sh mysql  # Connect to MySQL
+./docker.sh clean  # Clean up resources
+```
+
+## Manual Setup
 
 ### Prerequisites
 - .NET 10 SDK

@@ -4,6 +4,9 @@ Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure configuration to use environment variables
+builder.Configuration.AddEnvironmentVariables();
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddControllers();

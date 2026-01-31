@@ -23,8 +23,8 @@ Keep responses warm, brief, and focused. Always be respectful when discussing so
 
         public OpenAIService(IConfiguration configuration)
         {
-            var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY") ?? configuration["OpenAI:ApiKey"];
-            if (string.IsNullOrEmpty(apiKey) || apiKey == "your-openai-api-key-here" || apiKey == "${OPENAI_API_KEY}")
+            var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+            if (string.IsNullOrEmpty(apiKey))
             {
                 throw new InvalidOperationException("OpenAI API key is not configured. Please set OPENAI_API_KEY in your .env file");
             }
