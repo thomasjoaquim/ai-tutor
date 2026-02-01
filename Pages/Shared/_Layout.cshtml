@@ -55,19 +55,41 @@
                             <a class="nav-link" asp-area="" asp-page="/Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Learn More</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" href="#">Products</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/CreateMemorial">Create Memorial</a>
-                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-page="/Dashboard/Index">Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-page="/CreateMemorial">Create Memorial</a>
+                            </li>
+                        }
                     </ul>
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Account</a>
-                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                                    @User.Identity.Name
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" asp-page="/Dashboard/Index">Dashboard</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" asp-page="/Account/Logout">Logout</a></li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-page="/Account/Login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-page="/Account/Register">Register</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -90,7 +112,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="text-center text-md-end">
-                        <p>&copy; 2026 - Life's QR - <a asp-area="" asp-page="/Privacy">Privacy</a></p>
+                        <p>&copy; 2026 - Life's QR</p>
                     </div>
                 </div>
             </div>

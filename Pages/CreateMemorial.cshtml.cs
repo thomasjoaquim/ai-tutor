@@ -1,11 +1,22 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using MyProject.Models;
+using MyProject.Services;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
 namespace MyProject.Pages
 {
+    [Authorize]
     public class CreateMemorialModel : PageModel
     {
+        private readonly IMemorialService _memorialService;
+
+        public CreateMemorialModel(IMemorialService memorialService)
+        {
+            _memorialService = memorialService;
+        }
         [BindProperty]
         [Required(ErrorMessage = "Name is required")]
         [Display(Name = "Full Name")]
@@ -32,7 +43,7 @@ namespace MyProject.Pages
             // Initialize default values if needed
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
@@ -46,11 +57,26 @@ namespace MyProject.Pages
                 return Page();
             }
 
-            // Here you would typically save to database
-            // For now, we'll just redirect to a success page
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!int.TryParse(userIdClaim, out int userId))
+            {
+                return RedirectToPage("/Account/Login");
+            }
+
+            var memorial = new Memorial
+            {
+                UserId = userId,
+                Name = Name,
+                BirthDate = BirthDate,
+                DeathDate = DeathDate,
+                Biography = Biography ?? ""
+            };
+
+            await _memorialService.CreateMemorialAsync(memorial);
+            
             TempData["SuccessMessage"] = $"Memorial for {Name} has been created successfully!";
             
-            return RedirectToPage("/Index");
+            return RedirectToPage("/Dashboard/Index");
         }
     }
 }

@@ -4,12 +4,13 @@ namespace MyProject.Services
 {
     public interface IOpenAIService
     {
-        Task<string> GetBiographyAssistanceAsync(string userMessage, List<string> conversationHistory);
+        Task<string> GetBiographyAssistanceAsync(string userMessage, List<string> conversationHistory, int userId);
     }
 
     public class OpenAIService : IOpenAIService
     {
         private readonly ChatClient _chatClient;
+        private readonly TokenLimitService _tokenLimitService;
         private readonly string _systemPrompt = @"You are a compassionate AI assistant helping people write beautiful biographies for their deceased loved ones. 
 
 Your role is to:
@@ -21,7 +22,7 @@ Your role is to:
 
 Keep responses warm, brief, and focused. Always be respectful when discussing someone who has passed away.";
 
-        public OpenAIService(IConfiguration configuration)
+        public OpenAIService(IConfiguration configuration, TokenLimitService tokenLimitService)
         {
             var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
             if (string.IsNullOrEmpty(apiKey))
@@ -30,12 +31,23 @@ Keep responses warm, brief, and focused. Always be respectful when discussing so
             }
             
             _chatClient = new ChatClient("gpt-3.5-turbo", apiKey);
+            _tokenLimitService = tokenLimitService;
         }
 
-        public async Task<string> GetBiographyAssistanceAsync(string userMessage, List<string> conversationHistory)
+        public async Task<string> GetBiographyAssistanceAsync(string userMessage, List<string> conversationHistory, int userId)
         {
             try
             {
+                // Estimate tokens needed (rough calculation)
+                var estimatedTokens = EstimateTokens(userMessage, conversationHistory);
+                
+                // Check if user has enough tokens
+                if (!await _tokenLimitService.CanUseTokensAsync(userId, estimatedTokens))
+                {
+                    var remaining = await _tokenLimitService.GetRemainingTokensAsync(userId);
+                    return $"You have reached your monthly token limit. Remaining tokens: {remaining}. Your limit resets at the beginning of each month.";
+                }
+
                 var messages = new List<ChatMessage>
                 {
                     new SystemChatMessage(_systemPrompt)
@@ -54,12 +66,26 @@ Keep responses warm, brief, and focused. Always be respectful when discussing so
                 messages.Add(new UserChatMessage(userMessage));
 
                 var response = await _chatClient.CompleteChatAsync(messages);
+                
+                // Get actual token usage from response
+                var actualTokens = response.Value.Usage?.TotalTokenCount ?? estimatedTokens;
+                
+                // Record actual token usage
+                await _tokenLimitService.AddTokenUsageAsync(userId, actualTokens);
+                
                 return response.Value.Content[0].Text;
             }
             catch (Exception ex)
             {
                 return $"I'm sorry, I'm having trouble connecting right now. Please try again later. Error: {ex.Message}";
             }
+        }
+        
+        private int EstimateTokens(string userMessage, List<string> conversationHistory)
+        {
+            // Rough estimation: 1 token ≈ 4 characters
+            var totalChars = userMessage.Length + conversationHistory.Sum(h => h.Length) + _systemPrompt.Length;
+            return (int)(totalChars / 4.0 * 1.2); // Add 20% buffer
         }
     }
 }
