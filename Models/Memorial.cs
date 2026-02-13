@@ -9,6 +9,9 @@ namespace MyProject.Models
         public int UserId { get; set; }
         
         [Required]
+        public string UniqueId { get; set; } = "";
+        
+        [Required]
         public string Name { get; set; } = "";
         
         [Required]

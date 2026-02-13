@@ -41,6 +41,8 @@ builder.Services.AddScoped<IOpenAIService, OpenAIService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IMemorialService, MemorialService>();
 builder.Services.AddScoped<TokenLimitService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<QRCodeService>();
 
 var app = builder.Build();
 

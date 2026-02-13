@@ -24,12 +24,12 @@ namespace MyProject.Pages.Account
 
         public void OnGet(string returnUrl = "")
         {
-            ReturnUrl = returnUrl ?? "/Dashboard";
+            ReturnUrl = string.IsNullOrEmpty(returnUrl) ? "/Dashboard" : returnUrl;
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = "")
         {
-            ReturnUrl = returnUrl ?? "/Dashboard";
+            ReturnUrl = string.IsNullOrEmpty(returnUrl) ? "/Dashboard" : returnUrl;
 
             if (!ModelState.IsValid)
                 return Page();
@@ -48,6 +48,11 @@ namespace MyProject.Pages.Account
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}")
             };
+            
+            if (user.IsAdmin)
+            {
+                claims.Add(new Claim("IsAdmin", "true"));
+            }
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var authProperties = new AuthenticationProperties
@@ -59,6 +64,11 @@ namespace MyProject.Pages.Account
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, 
                 new ClaimsPrincipal(claimsIdentity), authProperties);
 
+            if (string.IsNullOrEmpty(ReturnUrl) || ReturnUrl == "/")
+            {
+                return RedirectToPage("/Dashboard/Index");
+            }
+            
             return LocalRedirect(ReturnUrl);
         }
     }

@@ -4,6 +4,44 @@
     ViewData["Title"] = "Dashboard";
 }
 
+<style>
+    .qr-modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+    }
+    .qr-modal-content {
+        background-color: white;
+        margin: 5% auto;
+        padding: 30px;
+        border-radius: 15px;
+        width: 90%;
+        max-width: 500px;
+        text-align: center;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+    .qr-close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        line-height: 20px;
+    }
+    .qr-close:hover {
+        color: #000;
+    }
+    .qr-image {
+        margin: 20px 0;
+        max-width: 100%;
+    }
+</style>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
@@ -36,9 +74,15 @@
                                         <small class="text-muted">Created: @memorial.CreatedAt.ToString("MMM dd, yyyy")</small>
                                     </p>
                                 </div>
-                                <div class="card-footer">
-                                    <a href="#" class="btn btn-outline-primary btn-sm">View</a>
-                                    <a href="#" class="btn btn-outline-secondary btn-sm">Edit</a>
+                                <div class="card-footer d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <a href="/memorial/@memorial.UniqueId" target="_blank" class="btn btn-outline-primary btn-sm">View</a>
+                                        <a asp-page="/EditMemorial" asp-route-id="@memorial.Id" class="btn btn-outline-secondary btn-sm">Edit</a>
+                                        <button onclick="showQRCode(@memorial.Id, '@memorial.Name')" class="btn btn-outline-success btn-sm">QR Code</button>
+                                    </div>
+                                    <form method="post" asp-page-handler="Delete" asp-route-id="@memorial.Id" onsubmit="return confirm('Tem certeza que deseja excluir este memorial?');" style="display: inline;">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -61,3 +105,48 @@
         </div>
     </div>
 </div>
+
+<!-- QR Code Modal -->
+<div id="qrModal" class="qr-modal">
+    <div class="qr-modal-content">
+        <span class="qr-close" onclick="closeQRModal()">&times;</span>
+        <h3 style="color: #1d2d56; font-family: 'Cinzel', serif; margin-bottom: 20px;" id="qrModalTitle">QR Code</h3>
+        <img id="qrImage" class="qr-image" src="" alt="QR Code" />
+        <div style="margin-top: 20px;">
+            <a id="qrDownloadLink" href="" download class="btn btn-primary" style="background-color: #eaaa10; border-color: #eaaa10;">
+                Download QR Code
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showQRCode(memorialId, memorialName) {
+        const modal = document.getElementById('qrModal');
+        const qrImage = document.getElementById('qrImage');
+        const qrDownloadLink = document.getElementById('qrDownloadLink');
+        const qrModalTitle = document.getElementById('qrModalTitle');
+        
+        const qrUrl = `/api/qrcode/generate/${memorialId}`;
+        
+        qrImage.src = qrUrl;
+        qrDownloadLink.href = qrUrl;
+        qrDownloadLink.download = `qrcode-${memorialName.replace(/\s+/g, '-').toLowerCase()}.png`;
+        qrModalTitle.textContent = `QR Code - ${memorialName}`;
+        
+        modal.style.display = 'block';
+    }
+    
+    function closeQRModal() {
+        const modal = document.getElementById('qrModal');
+        modal.style.display = 'none';
+    }
+    
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('qrModal');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+</script>

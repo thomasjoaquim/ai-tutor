@@ -23,6 +23,8 @@ namespace MyProject.Models
         
         public bool IsActive { get; set; } = true;
         
+        public bool IsAdmin { get; set; } = false;
+        
         public List<Memorial> Memorials { get; set; } = new();
     }
 }

@@ -27,5 +27,15 @@ namespace MyProject.Pages.Dashboard
                 Memorials = await _memorialService.GetUserMemorialsAsync(userId);
             }
         }
+        
+        public async Task<IActionResult> OnPostDeleteAsync(int id)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (int.TryParse(userIdClaim, out int userId))
+            {
+                await _memorialService.DeleteMemorialAsync(id, userId);
+            }
+            return RedirectToPage();
+        }
     }
 }

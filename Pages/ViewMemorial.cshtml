@@ -1,0 +1,133 @@
+@page "/memorial/{id}"
+@model ViewMemorialModel
+@{
+    ViewData["Title"] = Model.Memorial?.Name ?? "Memorial";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Life's QR</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&family=Cinzel:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 40px 0;
+        }
+        .memorial-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .memorial-header {
+            background: linear-gradient(135deg, #1d2d56 0%, #2a4073 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+        .memorial-name {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .memorial-dates {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+        .memorial-body {
+            padding: 50px 40px;
+        }
+        .biography-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: #1d2d56;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .biography-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #333;
+            text-align: justify;
+            white-space: pre-wrap;
+        }
+        .memorial-footer {
+            background: #f8f9fa;
+            padding: 30px 40px;
+            text-align: center;
+            border-top: 1px solid #dee2e6;
+        }
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: #1d2d56;
+            font-weight: 600;
+        }
+        .logo-accent {
+            color: #eaaa10;
+        }
+        @@media (max-width: 768px) {
+            .memorial-name {
+                font-size: 2rem;
+            }
+            .memorial-dates {
+                font-size: 1rem;
+            }
+            .memorial-header, .memorial-body {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    @if (Model.Memorial != null)
+    {
+        <div class="memorial-container">
+            <div class="memorial-header">
+                <h1 class="memorial-name">@Model.Memorial.Name</h1>
+                <div class="memorial-dates">
+                    @Model.Memorial.BirthDate.ToString("dd/MM/yyyy") - @Model.Memorial.DeathDate.ToString("dd/MM/yyyy")
+                </div>
+            </div>
+            
+            <div class="memorial-body">
+                @if (!string.IsNullOrEmpty(Model.Memorial.Biography))
+                {
+                    <h2 class="biography-title">Em Memória</h2>
+                    <div class="biography-text">@Model.Memorial.Biography</div>
+                }
+                else
+                {
+                    <p class="text-center text-muted">Nenhuma biografia disponível.</p>
+                }
+            </div>
+            
+            <div class="memorial-footer">
+                <div class="logo">LIFE<span class="logo-accent">'s</span> QR</div>
+                <small class="text-muted d-block mt-2">Preservando memórias para sempre</small>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="memorial-container">
+            <div class="memorial-body text-center">
+                <h2>Memorial não encontrado</h2>
+                <p class="text-muted">Este memorial não existe ou foi removido.</p>
+            </div>
+        </div>
+    }
+</body>
+</html>
