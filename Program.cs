@@ -16,13 +16,16 @@ builder.Configuration.AddEnvironmentVariables();
 builder.Services.AddRazorPages();
 builder.Services.AddControllers();
 
-// Database
-var connectionString = Environment.GetEnvironmentVariable("DB_SERVER") != null 
-    ? $"Server={Environment.GetEnvironmentVariable("DB_SERVER")};Database={Environment.GetEnvironmentVariable("DB_DATABASE")};Uid={Environment.GetEnvironmentVariable("DB_USER")};Pwd={Environment.GetEnvironmentVariable("DB_PASSWORD")};Port={Environment.GetEnvironmentVariable("DB_PORT")};" 
-    : "Server=localhost;Database=my_database;Uid=admin;Pwd=P@zzword1;Port=3306;";
+// Database (PostgreSQL)
+var dbHost = Environment.GetEnvironmentVariable("DB_HOST") ?? Environment.GetEnvironmentVariable("DB_SERVER") ?? "localhost";
+var dbDatabase = Environment.GetEnvironmentVariable("DB_DATABASE") ?? "my_database";
+var dbUser = Environment.GetEnvironmentVariable("DB_USER") ?? "admin";
+var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "P@zzword1";
+var dbPort = Environment.GetEnvironmentVariable("DB_PORT") ?? "5432";
+var connectionString = $"Host={dbHost};Database={dbDatabase};Username={dbUser};Password={dbPassword};Port={dbPort};";
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+    options.UseNpgsql(connectionString));
 
 // Authentication
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -30,6 +33,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         options.LoginPath = "/Account/Login";
         options.LogoutPath = "/Account/Logout";
+        options.AccessDeniedPath = "/Dashboard";
         options.ExpireTimeSpan = TimeSpan.FromDays(30);
         options.SlidingExpiration = true;
     });

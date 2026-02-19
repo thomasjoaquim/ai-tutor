@@ -6,14 +6,14 @@ A web application built with ASP.NET Core that helps users create digital memori
 
 - **Memorial Creation**: Create digital memorials with basic information (name, birth/death dates)
 - **AI Biography Assistant**: Interactive chat powered by OpenAI to help write meaningful biographies
-- **MySQL Integration**: Store memorial data in MySQL database
+- **PostgreSQL Integration**: Store memorial data in PostgreSQL database (Docker)
 - **Responsive Design**: Modern UI inspired by Life's QR website
 
 ## Technologies Used
 
 - ASP.NET Core (.NET 10)
 - Razor Pages
-- MySQL Database
+- PostgreSQL Database
 - OpenAI API Integration
 - Bootstrap 5
 - JavaScript (ES6+)
@@ -44,7 +44,7 @@ OPENAI_API_KEY=your-openai-api-key-here
 ./docker.sh up
 ```
 
-4. Access the application at `http://localhost:5000`
+4. Access the application at `http://localhost:5001`
 
 ### Docker Commands
 ```bash
@@ -52,7 +52,7 @@ OPENAI_API_KEY=your-openai-api-key-here
 ./docker.sh up     # Start application
 ./docker.sh down   # Stop application
 ./docker.sh logs   # View logs
-./docker.sh mysql  # Connect to MySQL
+./docker.sh postgres  # Connect to PostgreSQL
 ./docker.sh clean  # Clean up resources
 ```
 
@@ -60,7 +60,7 @@ OPENAI_API_KEY=your-openai-api-key-here
 
 ### Prerequisites
 - .NET 10 SDK
-- MySQL Server
+- PostgreSQL Server (or use Docker)
 - OpenAI API Key
 
 ### Installation
@@ -78,12 +78,12 @@ cp .env.example .env
 
 4. Configure your environment variables in `.env`:
 ```env
-# Database Configuration
-DB_SERVER=localhost
+# Database Configuration (PostgreSQL)
+DB_HOST=localhost
 DB_DATABASE=my_database
 DB_USER=admin
 DB_PASSWORD=your_password_here
-DB_PORT=3306
+DB_PORT=5432
 
 # OpenAI Configuration
 OPENAI_API_KEY=your-openai-api-key-here
@@ -95,7 +95,7 @@ dotnet restore
 dotnet run --urls="http://localhost:5000"
 ```
 
-5. Open your browser and navigate to `http://localhost:5000`
+5. Open your browser and navigate to `http://localhost:5000` (manual) or `http://localhost:5001` (Docker)
 
 ## Usage
 

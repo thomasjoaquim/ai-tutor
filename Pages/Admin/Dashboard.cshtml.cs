@@ -3,20 +3,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MyProject.Models;
 using MyProject.Services;
-using System.Security.Claims;
 
 namespace MyProject.Pages.Admin
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class DashboardModel : PageModel
     {
         private readonly IAdminService _adminService;
-        private readonly IUserService _userService;
 
-        public DashboardModel(IAdminService adminService, IUserService userService)
+        public DashboardModel(IAdminService adminService)
         {
             _adminService = adminService;
-            _userService = userService;
         }
 
         public AdminDashboardStats Stats { get; set; } = new();
@@ -26,18 +23,6 @@ namespace MyProject.Pages.Admin
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (!int.TryParse(userIdClaim, out int userId))
-            {
-                return RedirectToPage("/Account/Login");
-            }
-
-            var currentUser = await _userService.GetUserByIdAsync(userId);
-            if (currentUser == null || !currentUser.IsAdmin)
-            {
-                return RedirectToPage("/Dashboard/Index");
-            }
-
             Stats = await _adminService.GetDashboardStatsAsync();
             Users = await _adminService.GetAllUsersAsync();
             Memorials = await _adminService.GetAllMemorialsAsync();

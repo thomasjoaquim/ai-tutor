@@ -1,26 +1,24 @@
-version: '3.8'
-
 services:
-  # MySQL Database
-  mysql:
-    image: mysql:8.0
-    container_name: lifesqr_mysql
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: lifesqr_postgres
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: my_database
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: P@zzword1
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: P@zzword1
+      POSTGRES_DB: my_database
     ports:
-      - "3307:3306"
+      - "5432:5432"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - lifesqr_network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      timeout: 20s
-      retries: 10
+      test: ["CMD-SHELL", "pg_isready -U admin -d my_database"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   # ASP.NET Application
   web:
@@ -31,20 +29,20 @@ services:
       - "5001:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - DB_SERVER=mysql
+      - DB_HOST=postgres
       - DB_DATABASE=my_database
       - DB_USER=admin
       - DB_PASSWORD=P@zzword1
-      - DB_PORT=3306
+      - DB_PORT=5432
       - OPENAI_API_KEY=${OPENAI_API_KEY}
     depends_on:
-      mysql:
+      postgres:
         condition: service_healthy
     networks:
       - lifesqr_network
 
 volumes:
-  mysql_data:
+  postgres_data:
 
 networks:
   lifesqr_network:

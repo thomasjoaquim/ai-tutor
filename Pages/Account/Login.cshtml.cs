@@ -51,7 +51,7 @@ namespace MyProject.Pages.Account
             
             if (user.IsAdmin)
             {
-                claims.Add(new Claim("IsAdmin", "true"));
+                claims.Add(new Claim(ClaimTypes.Role, "Admin"));
             }
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
