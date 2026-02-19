@@ -1,56 +1,42 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Life's QR</title>
-    <script type="importmap"></script>
+    <title>@ViewData["Title"] - LIFE's QR</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/redesign.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;800&family=Cinzel&display=swap" rel="stylesheet" />
-    <style>
-        .navbar-brand {
-            font-family: 'Cinzel', serif;
-            font-size: 1.5rem;
-            color: #1d2d56 !important;
-            font-weight: bold;
-        }
-        .navbar {
-            background-color: white !important;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .navbar-nav .nav-link {
-            color: #1d2d56 !important;
-            font-weight: 500;
-        }
-        .navbar-nav .nav-link:hover {
-            color: #eaaa10 !important;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-lg navbar-light navbar-redesign border-bottom mb-0 sticky-top shadow-sm bg-white">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">LIFE's QR</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" asp-area="" asp-page="/Index">
+                    <span class="logo-circle">L</span>
+                    <span>LIFE's QR</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <div class="collapse navbar-collapse" id="navbarMain">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-page="/Index">Home</a>
                         </li>
-                        @if (User.Identity.IsAuthenticated)
+                        @if (User.Identity?.IsAuthenticated == true)
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-page="/Dashboard/Index">Dashboard</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/CreateMemorial">Create Memorial</a>
+                                <a class="btn btn-primary-gold btn-sm py-1 px-3 ms-lg-2" asp-area="" asp-page="/CreateMemorial">Create Memorial</a>
                             </li>
-                            @if (User.HasClaim("IsAdmin", "true"))
+                            @if (User.IsInRole("Admin"))
                             {
                                 <li class="nav-item">
                                     <a class="nav-link" asp-area="" asp-page="/Admin/Dashboard">Admin</a>
@@ -58,17 +44,17 @@
                             }
                         }
                     </ul>
-                    <ul class="navbar-nav">
-                        @if (User.Identity.IsAuthenticated)
+                    <ul class="navbar-nav align-items-lg-center gap-lg-2">
+                        @if (User.Identity?.IsAuthenticated == true)
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                                    @User.Identity.Name
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user me-1"></i>@User.Identity.Name
                                 </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" asp-page="/Dashboard/Index">Dashboard</a></li>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" asp-page="/Dashboard/Index"><i class="fas fa-heart me-2"></i>My Memorials</a></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" asp-page="/Account/Logout">Logout</a></li>
+                                    <li><a class="dropdown-item" asp-page="/Account/Logout"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                                 </ul>
                             </li>
                         }
@@ -78,7 +64,7 @@
                                 <a class="nav-link" asp-page="/Account/Login">Login</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-page="/Account/Register">Register</a>
+                                <a class="btn btn-primary-gold btn-sm py-1 px-3" asp-page="/Account/Register">Register</a>
                             </li>
                         }
                     </ul>
@@ -86,15 +72,41 @@
             </div>
         </nav>
     </header>
-    <div class="container-fluid px-0">
-        <main role="main">
-            @RenderBody()
-        </main>
-    </div>
+    <main class="flex-grow-1">
+        @RenderBody()
+    </main>
+    <footer class="bg-brand-navy text-white mt-auto py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="logo-circle" style="width: 40px; height: 40px; font-size: 1.25rem;">L</div>
+                        <span class="ms-2 fw-semibold" style="font-family: var(--font-serif); font-size: 1.25rem;">LIFE's QR</span>
+                    </div>
+                    <p class="text-white-50 small mb-0">Preserving memories and honoring lives through technology.</p>
+                </div>
+                <div class="col-md-4">
+                    <h3 class="h6 mb-3" style="font-family: var(--font-serif);">Links</h3>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2"><a asp-page="/Index" class="text-white-50 text-decoration-none footer-link-hover">Home</a></li>
+                        <li class="mb-2"><a asp-page="/Dashboard/Index" class="text-white-50 text-decoration-none footer-link-hover">Dashboard</a></li>
+                        <li class="mb-2"><a asp-page="/CreateMemorial" class="text-white-50 text-decoration-none footer-link-hover">Create Memorial</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h3 class="h6 mb-3" style="font-family: var(--font-serif);">Contact</h3>
+                    <p class="text-white-50 small mb-0">For questions or support, get in touch with us.</p>
+                </div>
+            </div>
+            <hr class="my-4 border-secondary" />
+            <div class="text-center small text-white-50">
+                <p class="mb-0">&copy; @DateTime.Now.Year LIFE's QR. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

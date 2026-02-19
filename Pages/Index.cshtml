@@ -1,145 +1,112 @@
-﻿@page
+@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Life's QR - Memorials Made To Be Shared";
+    ViewData["Title"] = "Home";
 }
-
-<style>
-    .hero-section {
-        background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center;
-        background-size: cover;
-        padding: 150px 0;
-        color: white;
-        text-align: center;
-    }
-    .hero-section h1 {
-        font-family: 'Cinzel', serif;
-        font-size: 3.5rem;
-        margin-bottom: 20px;
-    }
-    .hero-section h3 {
-        font-size: 1.5rem;
-        margin-bottom: 40px;
-    }
-    .btn-gold {
-        background-color: #eaaa10;
-        border-color: #eaaa10;
-        color: white;
-        padding: 12px 30px;
-        margin: 0 10px;
-    }
-    .btn-blue {
-        background-color: #1d2d56;
-        border-color: #1d2d56;
-        color: white;
-        padding: 12px 30px;
-        margin: 0 10px;
-    }
-    .quote-section {
-        padding: 80px 0;
-        background-color: #f8f9fa;
-    }
-    .quote {
-        font-size: 1.3rem;
-        line-height: 1.8;
-        font-style: italic;
-        color: #192032;
-        margin-bottom: 30px;
-    }
-    .author {
-        font-weight: bold;
-        font-size: 1.2rem;
-        color: #000;
-    }
-    .features-section {
-        padding: 80px 0;
-    }
-    .feature-step {
-        text-align: center;
-        margin-bottom: 40px;
-    }
-    .feature-step h3 {
-        color: #1d2d56;
-        margin-bottom: 20px;
-    }
-    .feature-step img {
-        width: 100%;
-        max-width: 300px;
-        margin-bottom: 20px;
-    }
-</style>
-
-<link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
 
 @if (TempData["SuccessMessage"] != null)
 {
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
         @TempData["SuccessMessage"]
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
 
-<!-- Hero Section -->
-<div class="hero-section">
+<!-- Hero (redesign: gradient navy, title + gold accent) -->
+<section class="hero-memorial position-relative">
     <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <h1>LIFE's QR</h1>
-                <h3>A digital celebration of life</h3>
-                <div class="action">
-                    <a href="#" class="btn btn-gold btn-lg">Search Memorials</a>
-                    <a href="#" class="btn btn-blue btn-lg">View Products</a>
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center text-white">
+                <h1 class="mb-4" style="font-family: var(--font-serif);">
+                    Preserve Memories,<br><span class="text-gold">Honor Lives</span>
+                </h1>
+                <p class="lead mb-4 opacity-90">
+                    Create lasting digital memorials, accessible via QR Code. A modern, respectful way to celebrate those we love.
+                </p>
+                <div class="hero-cta">
+                    <a asp-page="/Account/Register" class="btn btn-primary-gold btn-lg px-4">Create My First Memorial</a>
+                    <a asp-page="/Account/Login" class="btn btn-outline-white btn-lg px-4">I Already Have an Account</a>
                 </div>
             </div>
         </div>
     </div>
-</div>
+    <div class="position-absolute bottom-0 start-0 end-0" style="height: 100px; background: linear-gradient(to top, var(--neutral-50), transparent); pointer-events: none;"></div>
+</section>
 
-<!-- Quote Section -->
-<div class="quote-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 mx-auto">
-                <p class="quote">
-                    "The greatest gift we can give those we've lost is to ensure their story is told - forever cherished, 
-                    never forgotten. Through Life's QR, we can celebrate their life and legacy, keeping their spirit alive for 
-                    generations to come."
-                </p>
-                <p class="author text-center">- Matt Fraser</p>
+<!-- How It Works (3 steps) -->
+<section class="py-5 bg-white">
+    <div class="container py-4">
+        <div class="text-center mb-5">
+            <h2 class="display-6 text-brand-navy mb-3" style="font-family: var(--font-serif);">How It Works</h2>
+            <p class="text-muted">Three simple steps to create an everlasting tribute</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4 text-center">
+                <div class="step-icon mx-auto mb-4"><i class="fas fa-heart fa-2x text-brand-gold"></i></div>
+                <h3 class="h5 text-brand-navy mb-3" style="font-family: var(--font-serif);">1. Create the Memorial</h3>
+                <p class="text-muted">Add name, dates, and a caring biography. Our AI can help you write a meaningful text if you need it.</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="step-icon mx-auto mb-4"><i class="fas fa-qrcode fa-2x text-brand-gold"></i></div>
+                <h3 class="h5 text-brand-navy mb-3" style="font-family: var(--font-serif);">2. Get Your QR Code</h3>
+                <p class="text-muted">Download the generated QR Code and place it on a headstone, urn, frame, or keepsake.</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="step-icon mx-auto mb-4"><i class="fas fa-share-alt fa-2x text-brand-gold"></i></div>
+                <h3 class="h5 text-brand-navy mb-3" style="font-family: var(--font-serif);">3. Share the Story</h3>
+                <p class="text-muted">Family and friends can view the memorial by scanning the code or using the permanent public link.</p>
             </div>
         </div>
     </div>
-</div>
+</section>
 
-<!-- Features Section -->
-<div class="features-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-12 text-center mb-5">
-                <h2>Bring Their Story To Life</h2>
-            </div>
+<!-- Benefits (grid 2x3) -->
+<section class="py-5" style="background: var(--neutral-50);">
+    <div class="container py-4">
+        <div class="text-center mb-5">
+            <h2 class="display-6 text-brand-navy mb-3" style="font-family: var(--font-serif);">Why LIFE's QR</h2>
         </div>
-        <div class="row">
-            <div class="col-md-4 feature-step">
-                <h3>Step 1: Purchase your memorial</h3>
-                <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Memorial package" class="img-fluid" />
-                <p>Select the QR Sign of your liking — plaque or heart — and we'll carefully package your high-quality stainless steel sign and ship it to you.</p>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card card-memorial h-100 border-0">
+                    <div class="card-body text-center p-4">
+                        <div class="step-icon mx-auto mb-3"><i class="fas fa-shield-alt fa-lg text-brand-gold"></i></div>
+                        <h4 class="h6 text-brand-navy mb-2">Secure & Private</h4>
+                        <p class="text-muted small mb-0">Your memories are stored safely. You control who sees what.</p>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-4 feature-step">
-                <h3>Step 2: Create your online tribute</h3>
-                <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Mobile phone" class="img-fluid" />
-                <p>Scan the QR code and follow the simple, user-friendly wizard to set up your memorial page. Add a biography, photos, videos, a family tree, and more.</p>
+            <div class="col-md-6 col-lg-4">
+                <div class="card card-memorial h-100 border-0">
+                    <div class="card-body text-center p-4">
+                        <div class="step-icon mx-auto mb-3"><i class="fas fa-clock fa-lg text-brand-gold"></i></div>
+                        <h4 class="h6 text-brand-navy mb-2">Lasting</h4>
+                        <p class="text-muted small mb-0">Digital tributes that stay online for generations.</p>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-4 feature-step">
-                <h3>Step 3: Share your loved ones story</h3>
-                <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="QR code on monument" class="img-fluid" />
-                <p>Place your QR Sign at a headstone, urn, bench, or memorial tree. Visitors can scan the code to view photos, videos, stories, and leave messages.</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 text-center">
-                <a href="#" class="btn btn-gold btn-lg">View Products</a>
+            <div class="col-md-6 col-lg-4">
+                <div class="card card-memorial h-100 border-0">
+                    <div class="card-body text-center p-4">
+                        <div class="step-icon mx-auto mb-3"><i class="fas fa-mobile-alt fa-lg text-brand-gold"></i></div>
+                        <h4 class="h6 text-brand-navy mb-2">Mobile-Friendly</h4>
+                        <p class="text-muted small mb-0">Easy to read on any device, anywhere.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</section>
+
+<!-- Final CTA (navy background) -->
+<section class="py-5 bg-brand-navy text-white">
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h2 class="display-6 mb-4" style="font-family: var(--font-serif);">Start Preserving Memories Today</h2>
+                <p class="lead mb-4 opacity-90">Join families who chose a modern, lasting way to honor their loved ones.</p>
+                <a asp-page="/Account/Register" class="btn btn-primary-gold btn-lg px-5">Create My Free Memorial</a>
+            </div>
+        </div>
+    </div>
+</section>

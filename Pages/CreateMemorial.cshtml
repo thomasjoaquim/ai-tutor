@@ -4,12 +4,12 @@
     ViewData["Title"] = "Create Memorial";
 }
 
-<div class="container py-5">
+<div class="container py-5" style="background: var(--neutral-50); min-height: 100vh;">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow">
-                <div class="card-header" style="background-color: #1d2d56; color: white;">
-                    <h3 class="mb-0" style="font-family: 'Cinzel', serif;">
+        <div class="col-lg-8">
+            <div class="card card-memorial shadow-sm">
+                <div class="card-header bg-brand-navy text-white py-3">
+                    <h3 class="mb-0 h5" style="font-family: var(--font-serif);">
                         <i class="fas fa-heart me-2"></i>Create Memorial
                     </h3>
                 </div>
@@ -18,80 +18,76 @@
                         <div asp-validation-summary="All" class="alert alert-danger" style="display: none;"></div>
                         
                         <div class="mb-3">
-                            <label asp-for="Name" class="form-label fw-bold">Full Name</label>
+                            <label asp-for="Name" class="form-label">Full Name</label>
                             <input asp-for="Name" class="form-control" />
                             <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label asp-for="BirthDate" class="form-label fw-bold">Birth Date</label>
+                                <label asp-for="BirthDate" class="form-label">Birth Date</label>
                                 <input asp-for="BirthDate" class="form-control" type="date" />
                                 <span asp-validation-for="BirthDate" class="text-danger"></span>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label asp-for="DeathDate" class="form-label fw-bold">Death Date</label>
+                                <label asp-for="DeathDate" class="form-label">Death Date</label>
                                 <input asp-for="DeathDate" class="form-control" type="date" />
                                 <span asp-validation-for="DeathDate" class="text-danger"></span>
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Biography" class="form-label fw-bold">Biography</label>
-                            
-                            <!-- AI Assistant Button -->
+                            <label asp-for="Biography" class="form-label">Biography</label>
                             <div class="mb-3">
-                                <button type="button" class="btn btn-success" onclick="toggleAIAssistant()">
+                                <button type="button" class="btn btn-secondary-navy btn-sm" onclick="toggleAIAssistant()">
                                     <i class="fas fa-robot me-2"></i>AI Assistant
                                 </button>
                             </div>
-                            
-                            <!-- AI Assistant Container -->
-                            <div id="aiAssistantContainer" style="display: none; background: #f8f9fa; border-radius: 10px; padding: 20px; margin-bottom: 15px;">
+                            <div id="aiAssistantContainer" class="ai-assistant-box" style="display: none; margin-bottom: 1rem;">
                                 <!-- Step 1: Questions Phase -->
                                 <div id="questionsPhase">
-                                    <h5 style="color: #1d2d56; margin-bottom: 20px;">
+                                    <h5 class="text-brand-navy mb-3">
                                         <i class="fas fa-clipboard-list me-2"></i>Step 1: Basic Information (5 Questions)
                                     </h5>
                                     
                                     <div class="mb-3">
-                                        <label class="form-label fw-bold">1. What was their full name and nickname?</label>
+                                        <label class="form-label">1. What was their full name and nickname?</label>
                                         <input type="text" id="q1" class="form-control" placeholder="e.g., John Michael Smith, known as 'Johnny'" />
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label class="form-label fw-bold">2. What were their main passions or hobbies?</label>
+                                        <label class="form-label">2. What were their main passions or hobbies?</label>
                                         <input type="text" id="q2" class="form-control" placeholder="e.g., Gardening, fishing, playing guitar" />
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label class="form-label fw-bold">3. What was their profession or main life work?</label>
+                                        <label class="form-label">3. What was their profession or main life work?</label>
                                         <input type="text" id="q3" class="form-control" placeholder="e.g., Teacher, engineer, homemaker" />
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label class="form-label fw-bold">4. What are 2-3 words that best describe their personality?</label>
+                                        <label class="form-label">4. What are 2-3 words that best describe their personality?</label>
                                         <input type="text" id="q4" class="form-control" placeholder="e.g., Kind, funny, generous" />
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label class="form-label fw-bold">5. What is a memorable moment or achievement?</label>
+                                        <label class="form-label">5. What is a memorable moment or achievement?</label>
                                         <textarea id="q5" class="form-control" rows="3" placeholder="e.g., Traveled to 30 countries, raised 4 children"></textarea>
                                     </div>
                                     
-                                    <button type="button" class="btn btn-primary" onclick="goToStep2()" style="background-color: #eaaa10; border-color: #eaaa10;">
+                                    <button type="button" class="btn btn-primary-gold" onclick="goToStep2()">
                                         <i class="fas fa-arrow-right me-2"></i>Next: Choose Style
                                     </button>
                                 </div>
                                 
                                 <!-- Step 2: Style Selection -->
                                 <div id="stylePhase" style="display: none;">
-                                    <h5 style="color: #1d2d56; margin-bottom: 20px;">
+                                    <h5 class="text-brand-navy mb-3">
                                         <i class="fas fa-palette me-2"></i>Step 2: Choose Biography Style
                                     </h5>
                                     
                                     <div class="mb-3">
-                                        <label class="form-label fw-bold">What tone would you like?</label>
+                                        <label class="form-label">What tone would you like?</label>
                                         <select id="tone" class="form-control">
                                             <option value="formal">Formal and Respectful</option>
                                             <option value="warm" selected>Warm and Personal</option>
@@ -101,7 +97,7 @@
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label class="form-label fw-bold">How long should the biography be?</label>
+                                        <label class="form-label">How long should the biography be?</label>
                                         <select id="length" class="form-control">
                                             <option value="short">Short (100-150 words)</option>
                                             <option value="medium" selected>Medium (200-300 words)</option>
@@ -110,10 +106,10 @@
                                     </div>
                                     
                                     <div class="d-flex gap-2">
-                                        <button type="button" class="btn btn-secondary" onclick="backToStep1()">
+                                        <button type="button" class="btn btn-outline-memorial" onclick="backToStep1()">
                                             <i class="fas fa-arrow-left me-2"></i>Back
                                         </button>
-                                        <button type="button" class="btn btn-success" onclick="generateBiography()">
+                                        <button type="button" class="btn btn-secondary-navy" onclick="generateBiography()">
                                             <i class="fas fa-magic me-2"></i>Generate Biography
                                         </button>
                                     </div>
@@ -121,7 +117,7 @@
                                 
                                 <!-- Step 3: Preview & Confirm -->
                                 <div id="previewPhase" style="display: none;">
-                                    <h5 style="color: #1d2d56; margin-bottom: 20px;">
+                                    <h5 class="text-brand-navy mb-3">
                                         <i class="fas fa-eye me-2"></i>Step 3: Review Generated Biography
                                     </h5>
                                     
@@ -135,13 +131,13 @@
                                     </div>
                                     
                                     <div class="d-flex gap-2">
-                                        <button type="button" class="btn btn-secondary" onclick="backToStep2()">
+                                        <button type="button" class="btn btn-outline-memorial" onclick="backToStep2()">
                                             <i class="fas fa-arrow-left me-2"></i>Back
                                         </button>
-                                        <button type="button" class="btn btn-success" onclick="confirmBiography()">
+                                        <button type="button" class="btn btn-primary-gold" onclick="confirmBiography()">
                                             <i class="fas fa-check me-2"></i>Use This Biography
                                         </button>
-                                        <button type="button" class="btn btn-warning" onclick="regenerateBiography()">
+                                        <button type="button" class="btn btn-outline-memorial" onclick="regenerateBiography()">
                                             <i class="fas fa-redo me-2"></i>Regenerate
                                         </button>
                                     </div>
@@ -153,10 +149,10 @@
                         </div>
 
                         <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-primary" style="background-color: #eaaa10; border-color: #eaaa10;">
+                            <button type="submit" class="btn btn-primary-gold">
                                 <i class="fas fa-save me-2"></i>Create Memorial
                             </button>
-                            <a asp-page="/Dashboard/Index" class="btn btn-secondary">
+                            <a asp-page="/Dashboard/Index" class="btn btn-outline-memorial">
                                 <i class="fas fa-times me-2"></i>Cancel
                             </a>
                         </div>

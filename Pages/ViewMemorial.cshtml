@@ -6,88 +6,32 @@
 }
 
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Life's QR</title>
+    <title>@ViewData["Title"] - LIFE's QR</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&family=Cinzel:wght@400;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/redesign.css" asp-append-version="true" />
     <style>
-        body {
-            font-family: 'Manrope', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-            padding: 40px 0;
-        }
-        .memorial-container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        .memorial-header {
-            background: linear-gradient(135deg, #1d2d56 0%, #2a4073 100%);
-            color: white;
-            padding: 60px 40px;
-            text-align: center;
-        }
-        .memorial-name {
-            font-family: 'Cinzel', serif;
-            font-size: 3rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
-        .memorial-dates {
-            font-size: 1.3rem;
-            opacity: 0.95;
-            font-weight: 300;
-        }
-        .memorial-body {
-            padding: 50px 40px;
-        }
-        .biography-title {
-            font-family: 'Cinzel', serif;
-            font-size: 1.8rem;
-            color: #1d2d56;
-            margin-bottom: 25px;
-            text-align: center;
-        }
-        .biography-text {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: #333;
-            text-align: justify;
-            white-space: pre-wrap;
-        }
-        .memorial-footer {
-            background: #f8f9fa;
-            padding: 30px 40px;
-            text-align: center;
-            border-top: 1px solid #dee2e6;
-        }
-        .logo {
-            font-family: 'Cinzel', serif;
-            font-size: 1.5rem;
-            color: #1d2d56;
-            font-weight: 600;
-        }
-        .logo-accent {
-            color: #eaaa10;
-        }
+        body { font-family: var(--font-sans); background: var(--neutral-100); min-height: 100vh; padding: 2.5rem 0; }
+        .memorial-container { max-width: 48rem; margin: 0 auto; background: white; border-radius: 1rem; box-shadow: var(--shadow-lg); overflow: hidden; }
+        .memorial-header { background: linear-gradient(135deg, rgba(29, 45, 86, 0.95) 0%, rgba(29, 45, 86, 0.85) 100%); color: white; padding: 3rem 2rem; text-align: center; }
+        .memorial-header .heart-icon { width: 4rem; height: 4rem; background: rgba(255,255,255,0.1); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1rem; }
+        .memorial-header .heart-icon i { font-size: 1.5rem; color: white; }
+        .memorial-name { font-family: var(--font-serif); font-size: 3rem; font-weight: 600; margin-bottom: 1rem; }
+        .memorial-dates { font-size: 1.2rem; opacity: 0.95; }
+        .memorial-body { padding: 2.5rem 2rem; }
+        .biography-title { font-family: var(--font-serif); font-size: 1.75rem; color: var(--brand-navy); margin-bottom: 1.5rem; text-align: center; }
+        .biography-text { font-size: 1.1rem; line-height: 1.8; color: var(--neutral-800); text-align: justify; white-space: pre-wrap; }
+        .memorial-footer { background: var(--neutral-50); padding: 1.5rem 2rem; text-align: center; border-top: 1px solid var(--neutral-200); }
+        .logo { font-family: var(--font-serif); font-size: 1.25rem; color: var(--brand-navy); font-weight: 600; }
+        .logo-accent { color: var(--brand-gold); }
         @@media (max-width: 768px) {
-            .memorial-name {
-                font-size: 2rem;
-            }
-            .memorial-dates {
-                font-size: 1rem;
-            }
-            .memorial-header, .memorial-body {
-                padding: 30px 20px;
-            }
+            .memorial-name { font-size: 2rem; }
+            .memorial-dates { font-size: 1rem; }
+            .memorial-header, .memorial-body { padding: 1.5rem 1.25rem; }
         }
     </style>
 </head>
@@ -96,36 +40,35 @@
     {
         <div class="memorial-container">
             <div class="memorial-header">
+                <div class="heart-icon"><i class="fas fa-heart"></i></div>
                 <h1 class="memorial-name">@Model.Memorial.Name</h1>
                 <div class="memorial-dates">
-                    @Model.Memorial.BirthDate.ToString("dd/MM/yyyy") - @Model.Memorial.DeathDate.ToString("dd/MM/yyyy")
+                    @Model.Memorial.BirthDate.ToString("MMM dd, yyyy") — @Model.Memorial.DeathDate.ToString("MMM dd, yyyy")
                 </div>
             </div>
-            
             <div class="memorial-body">
                 @if (!string.IsNullOrEmpty(Model.Memorial.Biography))
                 {
-                    <h2 class="biography-title">Em Memória</h2>
+                    <h2 class="biography-title">In Memory</h2>
                     <div class="biography-text">@Model.Memorial.Biography</div>
                 }
                 else
                 {
-                    <p class="text-center text-muted">Nenhuma biografia disponível.</p>
+                    <p class="text-center text-muted">No biography available.</p>
                 }
             </div>
-            
             <div class="memorial-footer">
                 <div class="logo">LIFE<span class="logo-accent">'s</span> QR</div>
-                <small class="text-muted d-block mt-2">Preservando memórias para sempre</small>
+                <small class="text-muted d-block mt-2">Preserving memories forever</small>
             </div>
         </div>
     }
     else
     {
         <div class="memorial-container">
-            <div class="memorial-body text-center">
-                <h2>Memorial não encontrado</h2>
-                <p class="text-muted">Este memorial não existe ou foi removido.</p>
+            <div class="memorial-body text-center py-5">
+                <h2 class="text-brand-navy">Memorial Not Found</h2>
+                <p class="text-muted">This memorial does not exist or has been removed.</p>
             </div>
         </div>
     }

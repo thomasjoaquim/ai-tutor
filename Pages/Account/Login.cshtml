@@ -2,270 +2,46 @@
 @model MyProject.Pages.Account.LoginModel
 @{
     ViewData["Title"] = "Welcome Back";
+    Layout = "_Layout";
 }
 
-<style>
-    .login-container {
-        min-height: 100vh;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-    }
-    
-    .login-card {
-        background: white;
-        border-radius: 20px;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        overflow: hidden;
-        max-width: 800px;
-        width: 100%;
-        display: flex;
-        min-height: 500px;
-    }
-    
-    .login-left {
-        background: linear-gradient(45deg, #1d2d56 0%, #2c4875 100%);
-        color: white;
-        padding: 60px 40px;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .login-left::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -50%;
-        width: 200%;
-        height: 200%;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="%23ffffff" opacity="0.1"/><circle cx="20" cy="20" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="80" cy="30" r="1.5" fill="%23ffffff" opacity="0.1"/><circle cx="30" cy="80" r="1" fill="%23ffffff" opacity="0.1"/></svg>') repeat;
-        animation: float 20s infinite linear;
-    }
-    
-    @@keyframes float {
-        0% { transform: translateX(-100px) translateY(-100px); }
-        100% { transform: translateX(100px) translateY(100px); }
-    }
-    
-    .login-right {
-        padding: 60px 40px;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-    
-    .brand-logo {
-        font-family: 'Cinzel', serif;
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: #eaaa10;
-        margin-bottom: 10px;
-        position: relative;
-        z-index: 1;
-    }
-    
-    .brand-tagline {
-        font-size: 1.1rem;
-        opacity: 0.9;
-        margin-bottom: 30px;
-        position: relative;
-        z-index: 1;
-    }
-    
-    .welcome-text {
-        position: relative;
-        z-index: 1;
-        font-size: 1.1rem;
-        line-height: 1.6;
-    }
-    
-    .form-title {
-        font-family: 'Cinzel', serif;
-        color: #1d2d56;
-        font-size: 2rem;
-        margin-bottom: 10px;
-        text-align: center;
-    }
-    
-    .form-subtitle {
-        color: #666;
-        text-align: center;
-        margin-bottom: 40px;
-    }
-    
-    .form-group {
-        margin-bottom: 25px;
-        position: relative;
-    }
-    
-    .form-label {
-        font-weight: 600;
-        color: #1d2d56;
-        margin-bottom: 8px;
-        display: block;
-    }
-    
-    .form-control {
-        border: 2px solid #e9ecef;
-        border-radius: 12px;
-        padding: 15px 20px;
-        font-size: 16px;
-        transition: all 0.3s ease;
-        width: 100%;
-    }
-    
-    .form-control:focus {
-        border-color: #eaaa10;
-        box-shadow: 0 0 0 0.2rem rgba(234, 170, 16, 0.25);
-        outline: none;
-    }
-    
-    .form-check {
-        margin: 20px 0;
-    }
-    
-    .form-check-input:checked {
-        background-color: #eaaa10;
-        border-color: #eaaa10;
-    }
-    
-    .form-check-label {
-        color: #666;
-        margin-left: 8px;
-    }
-    
-    .btn-login {
-        background: linear-gradient(45deg, #1d2d56, #2c4875);
-        border: none;
-        border-radius: 12px;
-        padding: 15px 30px;
-        font-size: 16px;
-        font-weight: 600;
-        color: white;
-        width: 100%;
-        transition: all 0.3s ease;
-        margin-top: 20px;
-    }
-    
-    .btn-login:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(29, 45, 86, 0.3);
-        color: white;
-    }
-    
-    .register-link {
-        text-align: center;
-        margin-top: 30px;
-        padding-top: 20px;
-        border-top: 1px solid #e9ecef;
-    }
-    
-    .register-link a {
-        color: #eaaa10;
-        text-decoration: none;
-        font-weight: 600;
-    }
-    
-    .register-link a:hover {
-        color: #d4941a;
-    }
-    
-    .text-danger {
-        font-size: 14px;
-        margin-top: 5px;
-    }
-    
-    .alert {
-        border-radius: 12px;
-        margin-bottom: 20px;
-    }
-    
-    @@media (max-width: 768px) {
-        .login-card {
-            flex-direction: column;
-            margin: 10px;
-        }
-        
-        .login-left {
-            padding: 40px 30px;
-            text-align: center;
-        }
-        
-        .login-right {
-            padding: 40px 30px;
-        }
-        
-        .brand-logo {
-            font-size: 2rem;
-        }
-    }
-</style>
-
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap" rel="stylesheet" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
-
-<div class="login-container">
-    <div class="login-card">
-        <!-- Left Side - Branding -->
-        <div class="login-left">
-            <div>
-                <h1 class="brand-logo">LIFE's QR</h1>
-                <p class="brand-tagline">Memorials Made To Be Shared</p>
-                
-                <div class="welcome-text">
-                    <p>Welcome back! Sign in to access your memorial dashboard and continue preserving precious memories.</p>
-                    
-                    <p>Create beautiful digital tributes, share meaningful stories, and keep your loved ones' legacies alive forever.</p>
-                </div>
+<div class="min-vh-100 d-flex align-items-center justify-content-center py-5 bg-gradient-auth">
+    <div class="card border-0 shadow-lg rounded-4 mx-3" style="max-width: 420px; width: 100%;">
+        <div class="card-body p-4 p-md-5">
+            <div class="text-center mb-4">
+                <div class="logo-circle mx-auto mb-3" style="width: 64px; height: 64px; font-size: 2rem;">L</div>
+                <h2 class="h4 text-brand-navy mb-2" style="font-family: var(--font-serif);">Welcome Back</h2>
+                <p class="text-muted small">Sign in to your LIFE's QR account</p>
             </div>
-        </div>
-        
-        <!-- Right Side - Form -->
-        <div class="login-right">
-            <h2 class="form-title">Welcome Back</h2>
-            <p class="form-subtitle">Sign in to your account</p>
-            
             <form method="post">
-                <div asp-validation-summary="All" class="alert alert-danger" style="display: none;"></div>
-                
-                <div class="form-group">
-                    <label asp-for="Input.Email" class="form-label">
-                        <i class="fas fa-envelope me-2"></i>Email Address
-                    </label>
-                    <input asp-for="Input.Email" class="form-control" placeholder="Enter your email address" />
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                <div asp-validation-summary="All" class="alert alert-danger"></div>
+                <div class="mb-3">
+                    <label asp-for="Input.Email" class="form-label">Email</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input asp-for="Input.Email" class="form-control" placeholder="your@email.com" />
+                    </div>
+                    <span asp-validation-for="Input.Email" class="text-danger small"></span>
                 </div>
-                
-                <div class="form-group">
-                    <label asp-for="Input.Password" class="form-label">
-                        <i class="fas fa-lock me-2"></i>Password
-                    </label>
-                    <input asp-for="Input.Password" class="form-control" type="password" placeholder="Enter your password" />
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                <div class="mb-3">
+                    <label asp-for="Input.Password" class="form-label">Password</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input asp-for="Input.Password" class="form-control" type="password" placeholder="••••••••" />
+                    </div>
+                    <span asp-validation-for="Input.Password" class="text-danger small"></span>
                 </div>
-                
-                <div class="form-check">
+                <div class="form-check mb-4">
                     <input asp-for="Input.RememberMe" class="form-check-input" type="checkbox" />
-                    <label asp-for="Input.RememberMe" class="form-check-label">
-                        Remember me for 30 days
-                    </label>
+                    <label asp-for="Input.RememberMe" class="form-check-label small">Remember me for 30 days</label>
                 </div>
-                
-                <button type="submit" class="btn btn-login">
+                <button type="submit" class="btn btn-primary-gold w-100 py-2">
                     <i class="fas fa-sign-in-alt me-2"></i>Sign In
                 </button>
             </form>
-            
-            <div class="register-link">
-                <p>Don't have an account? <a asp-page="/Account/Register">Create one here</a></p>
-            </div>
+            <p class="text-center mt-4 mb-0 small">
+                Don't have an account? <a asp-page="/Account/Register" class="text-brand-gold fw-semibold text-decoration-none">Create one here</a>
+            </p>
         </div>
     </div>
 </div>
