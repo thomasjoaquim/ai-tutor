@@ -26,6 +26,7 @@ namespace MyProject.Data
                 entity.Property(e => e.FirstName).HasMaxLength(100);
                 entity.Property(e => e.LastName).HasMaxLength(100);
                 entity.Property(e => e.PasswordHash).HasMaxLength(255);
+                entity.Property(e => e.CreatedAt).HasColumnType("timestamp without time zone");
             });
             
             // Memorial configuration
@@ -34,6 +35,9 @@ namespace MyProject.Data
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Name).HasMaxLength(255);
                 entity.Property(e => e.Biography).HasColumnType("TEXT");
+                entity.Property(e => e.BirthDate).HasColumnType("timestamp without time zone");
+                entity.Property(e => e.DeathDate).HasColumnType("timestamp without time zone");
+                entity.Property(e => e.CreatedAt).HasColumnType("timestamp without time zone");
                 
                 // Foreign key relationship
                 entity.HasOne(e => e.User)
@@ -47,6 +51,7 @@ namespace MyProject.Data
             {
                 entity.HasKey(e => e.Id);
                 entity.HasIndex(e => e.UserId).IsUnique();
+                entity.Property(e => e.LastReset).HasColumnType("timestamp without time zone");
                 
                 entity.HasOne(e => e.User)
                     .WithOne()

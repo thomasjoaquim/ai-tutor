@@ -7,6 +7,9 @@ using MyProject.Extensions;
 
 Env.Load();
 
+// Npgsql timestamp behavior: allow DateTime with Kind=Unspecified
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure configuration to use environment variables
